@@ -49,6 +49,8 @@ export class HomePage {
     //else this.scrollTopButton=false;
     //   console.log(e);
   }
+
+
   scrollTopButton = false;
   segments: any = 'topSeller';
   constructor(
@@ -57,7 +59,6 @@ export class HomePage {
     public shared: SharedDataProvider,
     public navCtrl: NavController,
     translate: TranslateService) {
-
   }
   openProducts(value) {
     this.navCtrl.push(ProductsPage, { sortOrder: value });

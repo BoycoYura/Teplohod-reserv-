@@ -11,16 +11,14 @@
 
 </ion-header>
 
-
 <ion-content class="page-language" padding>
-
-  <ion-list radio-group [(ngModel)]="selectedLanguage" (ionChange)="updateLanguage(selectedLanguage)">
-    <ion-item *ngFor="let l of languages">
-      <img src="{{config.url+l.image}}" item-start>
+  <ion-list radio-group [(ngModel)]="lang" (ngModelChange)="changeLanguage($event)">
+    <ion-item *ngFor="let l of languagesList">
+      <img src="{{'http://dev8.kitweb.pro/'+l.image}}" item-start>
       <ion-label>
         {{l.name}}
       </ion-label>
-      <ion-radio [value]="l"></ion-radio>
+      <ion-radio [value]="l.code"></ion-radio>
     </ion-item>
   </ion-list>
 </ion-content>

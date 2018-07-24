@@ -1,14 +1,5 @@
-// Project Name: IonicEcommerce
-// Project URI: http://ionicecommerce.com
-// Author: VectorCoder Team
-// Author URI: http://vectorcoder.com/
-// Version: 1.0
-
 if (localStorage.langId == undefined) {
-  localStorage.langId = '1';
-}
-if (localStorage.direction == undefined) {
-  localStorage.direction = 'ltr';
+  localStorage.langId = 'ru';
 }
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -30,7 +21,7 @@ import { ProductsProvider } from '../providers/products/products';
 import { LanguagePage } from '../pages/language/language';
 import { SignUpPage } from '../pages/sign-up/sign-up';
 import { LoginPage } from '../pages/login/login';
-
+import { SingleDateTourPage } from '../pages/single-date-tour/single-date-tour';
 import { IntroPage } from '../pages/intro/intro';
 import { AboutUsPage } from '../pages/about-us/about-us';
 import { ContactUsPage } from '../pages/contact-us/contact-us';
@@ -51,7 +42,6 @@ import { CurencyPipe } from '../pipes/curency/curency';
 import { Toast } from '@ionic-native/toast';
 import { SearchPage } from '../pages/search/search';
 import { AlertProvider } from '../providers/alert/alert';
-import { CategoriesPage } from '../pages/categories/categories';
 import { ProductsPage } from '../pages/products/products';
 import { WishListPage } from '../pages/wish-list/wish-list';
 import { ShippingAddressPage } from '../pages/shipping-address/shipping-address';
@@ -79,32 +69,20 @@ import { Push } from '@ionic-native/push';
 import { Device } from '@ionic-native/device';
 import { Facebook } from '@ionic-native/facebook';
 import { GooglePlus } from '@ionic-native/google-plus';
-import { Categories2Page } from '../pages/categories2/categories2';
-import { SubCategoriesPage } from '../pages/sub-categories/sub-categories';
-import { Home5Page } from '../pages/home5/home5';
-import { Home4Page } from '../pages/home4/home4';
-import { Home3Page } from '../pages/home3/home3';
-import { Home2Page } from '../pages/home2/home2';
-import { Categories3Page } from '../pages/categories3/categories3';
-import { Categories4Page } from '../pages/categories4/categories4';
-import { Categories5Page } from '../pages/categories5/categories5';
 import { PrivacyPolicyPage } from '../pages/privacy-policy/privacy-policy';
 import { TermServicesPage } from '../pages/term-services/term-services';
 import { RefundPolicyPage } from '../pages/refund-policy/refund-policy';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Network } from '@ionic-native/network';
-import { SubCategories2Page } from '../pages/sub-categories2/sub-categories2';
-import { SubCategories3Page } from '../pages/sub-categories3/sub-categories3';
-import { SubCategories4Page } from '../pages/sub-categories4/sub-categories4';
-import { SubCategories5Page } from '../pages/sub-categories5/sub-categories5';
-import { Categories6Page } from '../pages/categories6/categories6';
-import { SubCategories6Page } from '../pages/sub-categories6/sub-categories6';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { AdMobFree} from '@ionic-native/admob-free';
 import { FCM } from '@ionic-native/fcm';
 import { AppVersion } from '@ionic-native/app-version';
 import { OneSignal } from '@ionic-native/onesignal';
-
+import { HttpClientModule }   from '@angular/common/http';
+import { SingleTourPage } from '../pages/single-tour/single-tour';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { PaymentErrorPage } from '../pages/payment-error/payment-error';
 
 @NgModule({
   declarations: [
@@ -112,26 +90,10 @@ import { OneSignal } from '@ionic-native/onesignal';
     HomePage,
     SearchPage,
     CartPage,
-    Home2Page,
-    Home3Page,
-    Home4Page,
-    Home5Page,
     SearchPage,
-    CategoriesPage,
-    Categories2Page,
-    Categories3Page,
-    Categories4Page,
-    Categories5Page,
-    Categories6Page,
     IntroPage,
-    SubCategoriesPage,
-    SubCategories2Page,
-    SubCategories3Page,
-    SubCategories4Page,
-    SubCategories5Page,
-    SubCategories6Page,
+    SingleTourPage,
     ProductsPage,
-
     LanguagePage,
     ContactUsPage,
     AboutUsPage,
@@ -142,6 +104,8 @@ import { OneSignal } from '@ionic-native/onesignal';
     ShippingAddressPage,
     ForgotPasswordPage,
     HeaderComponent,
+    SingleDateTourPage,
+    PaymentErrorPage,
     BannersComponent,
     SelectZonesPage,
     MyShippingAddressesPage,
@@ -168,6 +132,7 @@ import { OneSignal } from '@ionic-native/onesignal';
     SettingsPage
   ],
   imports: [
+    HttpClientModule,
     IonicModule.forRoot(MyApp,{
       backButtonText: '',
       iconMode: 'md',
@@ -189,30 +154,17 @@ import { OneSignal } from '@ionic-native/onesignal';
   entryComponents: [
     MyApp,
     HomePage,
-    Home2Page,
-    Home3Page,
-    Home4Page,
-    Home5Page,
     SearchPage,
-    CategoriesPage,
-    Categories2Page,
-    Categories3Page,
-    Categories4Page,
-    Categories5Page,
-    Categories6Page,
-    SubCategoriesPage,
-    SubCategories2Page,
-    SubCategories3Page,
-    SubCategories4Page,
-    SubCategories5Page,
-    SubCategories6Page,
     IntroPage,
+    SingleTourPage,
     PrivacyPolicyPage,
     RefundPolicyPage,
     TermServicesPage,
     LanguagePage,
+    SingleDateTourPage,
     ProductsPage,
     ContactUsPage,
+    PaymentErrorPage,
     AboutUsPage,
     IntroPage,
     WishListPage,
@@ -273,4 +225,6 @@ import { OneSignal } from '@ionic-native/onesignal';
     OneSignal
   ]
 })
+
+
 export class AppModule { }

@@ -1,0 +1,97 @@
+<ion-header>
+
+    <ion-navbar>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+  
+      <ion-navbar>
+          <ion-title>{{'Tour Details'|translate}}</ion-title>
+      </ion-navbar>
+
+    </ion-navbar>
+  
+</ion-header>
+
+
+<ion-content padding>
+<div class="tour-image" >
+    <ion-slides pager=true paginationType="bullets">
+        <ion-slide *ngFor="let p of ImagesArray">
+            <img  src="http://dev8.kitweb.pro/{{p.name}}" alt="">
+        </ion-slide>
+    </ion-slides>
+</div>
+
+<!-- <div *ngFor="let p of DatesAllArray">
+    <p>{{p.date}}</p>
+    <p>{{p.time}}</p>
+</div> -->
+
+
+<form class="form" (ngSubmit)="OrderTour()">
+<div class="tour-info" >
+    <p class="tour-title">{{TourArray.title}}</p>
+    <p>{{TourArray.pier}}</p>
+    <p>{{TourArray.interval}}</p>
+
+    <ion-list class="select-list">
+        <ion-item class="data-select">
+          <ion-label>Дата</ion-label>
+          <ion-select name="date_select" [(ngModel)]="date_select" (ngModelChange)="check_time($event)">
+            <div *ngFor="let p of DatesAllArray">
+                <ion-option  nama="option" value="{{p}}" ngDefaultControl>{{p}}</ion-option>
+            </div>
+          </ion-select>
+        </ion-item>
+        <ion-item class="data-select">
+            <ion-label>Время</ion-label>
+            <ion-select name="time_select" [(ngModel)]="time_select" disabled="{{isDisabled}}">
+              <div *ngFor="let p of timeArray">
+                  <ion-option  nama="option" value="{{p}}" ngDefaultControl>{{p}}</ion-option>
+              </div>
+            </ion-select>
+        </ion-item>
+    </ion-list>
+
+    <div class="price-block">
+        <p class="ticket-price-text">{{'Price'| translate }} - {{TourArray.price}} р.</p>
+        <div class="ticket-counter">
+            <span (click)="adult_ticket_decrement()">-</span>
+            <input class="counter" name="adult_tickets_count" type="text" value="{{adult_tickets_count}}">
+            <span (click)="adult_ticket_increment()">+</span>
+        </div>
+    </div>
+
+    <div class="price-block">
+        <p class="ticket-price-text">{{'Child'| translate }} - {{TourArray.child_price}} р.</p>
+        <div class="ticket-counter">
+            <span (click)="child_ticket_decrement()">-</span>
+            <input class="counter" name="child_tickets_count"  type="text" value="{{child_tickets_count}}">
+            <span (click)="child_ticket_increment()">+</span>
+        </div>
+    </div>
+
+    <div class="price-block">
+        <p class="ticket-price-text">{{'Preferential'| translate }} - {{TourArray.preferential_price}} р.</p>
+        <div class="ticket-counter">
+            <span (click)=" pref_ticket_decrement()">-</span>
+            <input class="counter" name="pref_tickets_count"  type="text" value="{{pref_tickets_count}}">
+            <span (click)=" pref_ticket_increment()">+</span>
+        </div>
+    </div> 
+</div>
+
+
+<button ion-button full type="submit" class="order-button">{{'Order'| translate }}</button>
+<div class="tour-description">
+  <p class="desc-title">{{'Description'| translate }}</p>
+  <p class="desc-value">{{TourArray.description}}</p>
+</div>
+</form>
+
+<!-- <iframe [src]='sanitizer.bypassSecurityTrustResourceUrl(locate_url)'>
+</iframe> -->
+
+
+

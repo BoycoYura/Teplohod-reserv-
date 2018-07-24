@@ -18,7 +18,8 @@ import { OneSignal } from "@ionic-native/onesignal";
 
 export class ConfigProvider {
   public url: string = 'http://dev8.kitweb.pro/v1/';
-  public langId: string = localStorage.langId;
+
+  public langId: string = 'ru';
   public loader = 'dots';
   public newProductDuration = 100;
   public cartButton = 1;//1 = show and 0 = hide

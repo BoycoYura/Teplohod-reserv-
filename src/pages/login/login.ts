@@ -13,6 +13,9 @@ import { SharedDataProvider } from '../../providers/shared-data/shared-data';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { AlertProvider } from '../../providers/alert/alert';
 import { GooglePlus } from '@ionic-native/google-plus';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { HomePage } from '../home/home';
+import { HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'page-login',
@@ -20,7 +23,7 @@ import { GooglePlus } from '@ionic-native/google-plus';
 
 })
 export class LoginPage {
-  formData = { customers_email_address: '', customers_password: '' };
+  formData = { email: '', password: '' };
   errorMessage = '';
   constructor(
     public http: Http,
@@ -31,6 +34,8 @@ export class LoginPage {
     public shared: SharedDataProvider,
     private fb: Facebook,
     public alert: AlertProvider,
+    public navCtrl: NavController,
+    private httpClient: HttpClient,
     private googlePlus: GooglePlus
   ) {
 
@@ -39,16 +44,24 @@ export class LoginPage {
   login() {
     this.loading.show();
     this.errorMessage = '';
-    this.http.post(this.config.url + 'processLogin', this.formData).map(res => res.json()).subscribe(data => {
-      this.loading.hide();
-      if (data.success == 1) {
-        this.shared.login(data.data[0]);
-        this.dismiss();
-      }
-      if (data.success == 0) {
-        this.errorMessage = data.message;
-      }
-    });
+
+    this.httpClient.post('http://dev8.kitweb.pro/v1/login', this.formData).subscribe(
+      res => {
+        this.loading.hide();
+        console.log("User info login");
+        console.log(res);
+        this.shared.userInfo(res);
+        this.viewCtrl.dismiss();
+      },
+      err => {
+        var er_status = err.status;
+        alert(err.error.error);
+        this.loading.hide();
+        if(er_status == '500'){
+          alert("Ошибка сервера");
+        }
+
+      });
   }
   openSignUpPage() {
     let modal = this.modalCtrl.create(SignUpPage);

@@ -1,0 +1,63 @@
+<ion-header>
+
+    <ion-navbar>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+  
+      <ion-navbar>
+          <ion-title>{{'Tour Details'|translate}}</ion-title>
+      </ion-navbar>
+  
+    </ion-navbar>
+  
+</ion-header>
+
+
+<ion-content padding>
+<div class="tour-image">
+  <img src="{{'http://dev8.kitweb.pro/'+TourArray.image}}" alt="">
+</div>
+
+<form #loginForm="ngForm" class="form" (ngSubmit)="OrderTour()">
+  <div class="tour-info" >
+      <p class="tour-title">{{TourArray.title}}</p>
+      <p>{{TourArray.pier}}</p>
+      <p class="tour-interval">{{TourArray.interval}}</p>
+
+      <div class="price-block">
+          <p class="ticket-price-text">{{'Price'| translate }} - {{TourArray.price}} р.</p>
+          <div class="ticket-counter">
+              <span (click)="adult_ticket_decrement()">-</span>
+              <input class="counter" name="adult_tickets_count" type="text"  value="{{adult_tickets_count}}">
+              <span (click)="adult_ticket_increment()">+</span>
+          </div>
+      </div>
+
+      <div class="price-block">
+          <p class="ticket-price-text">{{'Child'| translate }} - {{TourArray.child_price}} р.</p>
+          <div class="ticket-counter">
+              <span (click)="child_ticket_decrement()">-</span>
+              <input class="counter" name="child_tickets_count" type="text" value="{{child_tickets_count}}">
+              <span (click)="child_ticket_increment()">+</span>
+          </div>
+      </div>
+
+      <div class="price-block">
+          <p class="ticket-price-text">{{'Preferential'| translate }} - {{TourArray.preferential_price}} р.</p>
+          <div class="ticket-counter">
+              <span (click)=" pref_ticket_decrement()">-</span>
+              <input class="counter" name="pref_tickets_count" type="text" value="{{pref_tickets_count}}">
+              <span (click)=" pref_ticket_increment()">+</span>
+          </div>
+      </div>
+  </div>
+
+
+<button type="submit" ion-button full class="order-button">{{'Order'| translate }}</button>
+<div class="tour-description">
+  <p class="desc-title">{{'Description'| translate }}</p>
+  <p class="desc-value">{{TourArray.description}}</p>
+</div>
+</form>
+</ion-content>

@@ -78,6 +78,7 @@ export class SettingsPage {
   }
   logOut() {
     this.shared.logOut();
+    this.navCtrl.push(LoginPage);
   }
   openPage(page) {
     if (page == 'myAccount') this.navCtrl.push(MyAccountPage);
@@ -193,4 +194,14 @@ export class SettingsPage {
     this.loading.autoHide(2000);
     this.events.publish('showAd');
   }
+
+  ngOnInit() {
+    console.log("All shared data");
+    console.log(this.shared.customerData.name);
+    console.log(this.shared.customerData.surname);
+    console.log(this.shared.customerData.email);
+    console.log(this.shared.customerData.X_Auth);
+  }
+
+
 }

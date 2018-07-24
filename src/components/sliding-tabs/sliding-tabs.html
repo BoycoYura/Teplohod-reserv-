@@ -12,29 +12,53 @@
   </ion-slides>
 
 </div>
+  <ion-segment class="segments-home"  [(ngModel)]="segments" color="primary">
+    <ion-segment-button value="newest">{{'Walking'| translate }}</ion-segment-button>
+    <ion-segment-button value="categories">{{'Tours'| translate }}</ion-segment-button>
+  </ion-segment>
 
-<div *ngIf="type!='image'" >
-  <ion-slides slidesPerView="auto" dir="{{shared.dir}}">
-    <ion-slide [class.selected]="selected==''" *ngIf="shared.subCategories!=null" (click)="changeTab('')">
-      {{'All'|translate}}
-    </ion-slide>
-    <ion-slide [class.selected]="selected==c.id" *ngFor="let c of shared.subCategories" (click)="changeTab(c)">
-      {{c.name}}
-    </ion-slide>
-  </ion-slides>
+  <div [ngSwitch]="segments">
+      <ion-col class="newest" *ngSwitchCase="'newest'"  col-12>
+          <ion-slides pager=true paginationType="bullets">
+              <ion-slide *ngFor="let p of Alltours">
+                  <div class="tour-body">
+                      <img src="{{'http://dev8.kitweb.pro/'+ p.image}}" alt="">
+                      <p class="tour-title">{{p.title}}</p>
+                      <p class="tour-pierce">{{p.pier}}</p>
+                      <p class="tour-intervel">{{p.interval}}</p>
+                      <p class="tour-price">{{'Price'| translate }} -{{p.price}} р</p>
+                      <p class="tour-price">{{'Child'| translate }} - {{p.child_price}} р</p>
+                      <p class="tour-price">{{'Preferential'| translate }} -{{p.preferential_price}} р</p>
+                      <button class="tour-detail" (click)="tourDetails((p.id))">{{'Details'| translate }}</button>
+                  </div>
+              </ion-slide>
+          </ion-slides>
+          <p class="empty-text" *ngIf="tourEmpty == true">{{'Empty List' | translate}}...</p>  
+      </ion-col>
 
-</div>
+      <ion-col class="newest" *ngSwitchCase="'categories'"  col-12>
+          <ion-slides pager=true paginationType="bullets">
+              <ion-slide *ngFor="let p of AllDatatours">
+                  <div class="tour-body">
+                      <img src="{{'http://dev8.kitweb.pro/'+ p.image}}" alt="">
+                      <p class="tour-title">{{p.title}}</p>
+                      <p class="tour-pierce">{{p.pier}}</p>
+                      <p class="tour-intervel">{{p.interval}}</p>
+                      <p class="tour-price">{{'Price'| translate }} -{{p.price}} р</p>
+                      <p class="tour-price">{{'Child'| translate }} - {{p.child_price}} р</p>
+                      <p class="tour-price">{{'Preferential'| translate }} -{{p.preferential_price}} р</p>
+                      <button class="tour-detail" (click)="tourDataDetails((p.id))">{{'Details'| translate }}</button>
+                  </div>
+              </ion-slide>
+          </ion-slides>
+          <p class="empty-text" *ngIf="dataTourEmpty == true">{{'Empty List' | translate}}...</p>  
+      </ion-col>
+  </div>
 
-<ion-grid>
-  <ion-col *ngFor="let p of products" col-6>
-    <product [data]="p" [type]="'normal'"></product>
-  </ion-col>
 
-  <ion-col *ngIf="products.length==0" col-12 class="animated fadeIn">
-    <h6 text-center>{{'No Products Found!'|translate}}</h6>
-  </ion-col>
-</ion-grid>
+
+
 
 <ion-infinite-scroll #infinite (ionInfinite)="getProducts($event)">
-  <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  <!-- <ion-infinite-scroll-content></ion-infinite-scroll-content> -->
 </ion-infinite-scroll>

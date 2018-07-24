@@ -9,7 +9,5 @@ import { Http } from '@angular/http';
 import { ConfigProvider } from '../config/config';
 
 export function createTranslateLoader(http: Http, config: ConfigProvider) {
-  
-  return new TranslateHttpLoader(http, 'http://demo0.ionicecommerce.com/'+'appLabels3?lang=',"");
- 
+  return new TranslateHttpLoader(http, './assets/lang/', '.json');
 }

@@ -1,5 +1,10 @@
 page-home{
     .page-home{
+        .slides .swiper-pagination-bullet {
+            background: #877a7a;
+        }
+
+        background-color: #EEEEEE;
         .module{
             .slides{
                 .swiper-slide:first-child{
@@ -47,4 +52,29 @@ page-home{
     .animate-product {
         animation: bounceInRight 0.75s;
     }
+
+    .segments-home{
+        display: block;
+        background: white;
+        
+    
+        .segment-button{
+            display: inline-block;
+            width: auto;
+            border: none;
+            text-transform: capitalize;
+            font-size: 16px;
+            margin-top: 5px;
+            margin-left: 20px;
+            color: #0071ff;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-right: 30px!important;
+        }
+
+        .segment-button.segment-activated{
+            color: #0071ff;
+        }
+    }
 }
+

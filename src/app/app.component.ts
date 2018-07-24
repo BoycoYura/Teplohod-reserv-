@@ -1,15 +1,9 @@
-// Project Name: IonicEcommerce
-// Project URI: http://ionicecommerce.com
-// Author: VectorCoder Team
-// Author URI: http://vectorcoder.com/
-
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, ModalController, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
 import { TranslateService } from '@ngx-translate/core';
-
 import { HomePage } from '../pages/home/home';
 import { LanguagePage } from '../pages/language/language';
 import { IntroPage } from '../pages/intro/intro';
@@ -19,7 +13,6 @@ import { SignUpPage } from '../pages/sign-up/sign-up';
 import { LoginPage } from '../pages/login/login';
 import { ConfigProvider } from '../providers/config/config';
 import { SharedDataProvider } from '../providers/shared-data/shared-data';
-import { CategoriesPage } from '../pages/categories/categories';
 import { WishListPage } from '../pages/wish-list/wish-list';
 import { MyAccountPage } from '../pages/my-account/my-account';
 import { MyOrdersPage } from '../pages/my-orders/my-orders';
@@ -30,21 +23,13 @@ import { SettingsPage } from '../pages/settings/settings';
 import { Network } from '@ionic-native/network';
 import { AlertProvider } from '../providers/alert/alert';
 import { LoadingProvider } from '../providers/loading/loading';
-import { Home2Page } from '../pages/home2/home2';
-import { Home3Page } from '../pages/home3/home3';
-import { Home4Page } from '../pages/home4/home4';
-import { Home5Page } from '../pages/home5/home5';
-import { Categories2Page } from '../pages/categories2/categories2';
-import { Categories4Page } from '../pages/categories4/categories4';
-import { Categories5Page } from '../pages/categories5/categories5';
-import { Categories3Page } from '../pages/categories3/categories3';
-import { Categories6Page } from '../pages/categories6/categories6';
 import { trigger, transition, animate, style } from '@angular/animations';
 import { AdMobFree, AdMobFreeBannerConfig, AdMobFreeInterstitialConfig } from '@ionic-native/admob-free';
 import { AppVersion } from '@ionic-native/app-version';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { Http } from '@angular/http';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 @Component({
   animations: [
@@ -82,7 +67,7 @@ export class MyApp {
     public modalCtrl: ModalController,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
-    translate: TranslateService,
+    public translate: TranslateService,
     public storage: Storage,
     public shared: SharedDataProvider,
     public http: Http,
@@ -106,6 +91,9 @@ export class MyApp {
         storage.set('introPage', 'firstTime');
       }
     });
+
+    console.log("Shared info user");
+    console.log(shared.customerData);
 
     let connectedToInternet = true;
     network.onDisconnect().subscribe(() => {
@@ -131,9 +119,7 @@ export class MyApp {
     });
     this.platform.setDir(localStorage.direction, true);
     shared.dir = localStorage.direction;
-    //setting default languge on start up 
-    translate.setDefaultLang(this.config.langId);
-    //if(this.config.siteSetting()){
+
     this.initializeApp();
     //}
     events.subscribe('showAd', () => {
@@ -142,15 +128,17 @@ export class MyApp {
   }
 
   initializeApp() {
+    console.log("Lang Cur After:");
+    console.log(localStorage.langId);
+    if (localStorage.langId == undefined || localStorage.langId == '1') {
+      localStorage.langId = 'ru';
+    }
+    this.translate.use(localStorage.langId);
     this.platform.ready().then(() => {
       this.config.siteSetting().then((value) => {
         this.storage.get('firsttimeApp').then((val) => {
           if (val == 'firstTime') {
             if (this.config.homePage == 1) { this.rootPage = HomePage; }
-            if (this.config.homePage == 2) { this.rootPage = Home2Page; }
-            if (this.config.homePage == 3) { this.rootPage = Home3Page; }
-            if (this.config.homePage == 4) { this.rootPage = Home4Page; }
-            if (this.config.homePage == 5) { this.rootPage = Home5Page; }
             setTimeout(() => { this.splashScreen.hide(); }, 700);
           }
           this.storage.set('firsttimeApp', 'firstTime');
@@ -206,17 +194,6 @@ export class MyApp {
   openPage(page) {
     if (page == 'home') this.openHomePage();
     else if (page == 'home1') this.nav.setRoot(HomePage);
-    else if (page == 'home2') this.nav.setRoot(Home2Page);
-    else if (page == 'home3') this.nav.setRoot(Home3Page);
-    else if (page == 'home4') this.nav.setRoot(Home4Page);
-    else if (page == 'home5') this.nav.setRoot(Home5Page);
-    else if (page == 'categories') this.openCategoryPage();
-    else if (page == 'categories1') this.nav.setRoot(CategoriesPage);
-    else if (page == 'categories2') this.nav.setRoot(Categories2Page);
-    else if (page == 'categories3') this.nav.setRoot(Categories3Page);
-    else if (page == 'categories4') this.nav.setRoot(Categories4Page);
-    else if (page == 'categories5') this.nav.setRoot(Categories5Page);
-    else if (page == 'categories6') this.nav.setRoot(Categories6Page);
     else if (page == 'products') this.nav.setRoot(ProductsPage);
     else if (page == 'myWishList') this.nav.setRoot(WishListPage);
     else if (page == 'myShippingAddresses') this.nav.setRoot(MyShippingAddressesPage);
@@ -235,18 +212,6 @@ export class MyApp {
   }
   openHomePage() {
     if (this.config.homePage == 1) { this.nav.setRoot(HomePage); }
-    if (this.config.homePage == 2) { this.nav.setRoot(Home2Page); }
-    if (this.config.homePage == 3) { this.nav.setRoot(Home3Page); }
-    if (this.config.homePage == 4) { this.nav.setRoot(Home4Page); }
-    if (this.config.homePage == 5) { this.nav.setRoot(Home5Page); }
-  }
-  openCategoryPage() {
-    if (this.config.categoryPage == 1) { this.nav.setRoot(CategoriesPage); }
-    if (this.config.categoryPage == 2) { this.nav.setRoot(Categories2Page); }
-    if (this.config.categoryPage == 3) { this.nav.setRoot(Categories3Page); }
-    if (this.config.categoryPage == 4) { this.nav.setRoot(Categories4Page); }
-    if (this.config.categoryPage == 5) { this.nav.setRoot(Categories5Page); }
-    if (this.config.categoryPage == 6) { this.nav.setRoot(Categories6Page); }
   }
 
   openLanguagePage() {

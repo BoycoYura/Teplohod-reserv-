@@ -1,0 +1,24 @@
+<ion-header>
+  
+  <ion-navbar>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      {{'Payment Status'| translate }}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="page-payment-error">
+<ion-card>
+  <ion-card-content>
+      <ion-icon name="close-circle"></ion-icon>
+      <h3>{{'Error'| translate }}</h3>
+      <h4>{{'Error payment'| translate }}</h4>
+      <button ion-button block color="primary" (click)="openOrders()">{{'My Orders'| translate }}</button>
+      <button ion-button block clear color="primary" (click)="openPament()">{{'Try again'| translate }}</button>
+  </ion-card-content>
+</ion-card>
+</ion-content>

@@ -1,6 +1,45 @@
 sliding-tabs {
+    
+.tour-title{
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.empty-text{
+    text-align: center;
+}
+
+.tour-pierce,.tour-intervel{
+    color: #0071ff;
+    font-size: 18px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    text-transform: capitalize;
+}
+
+.tour-detail{
+    font-size: 16px;
+    padding: 10px 15px;
+    background: #2F7BDB;
+    color: white;
+    border-radius: 5px;
+    margin-top: 30px;
+}
+
+.tour-price{
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.tour-intervel{
+    margin-bottom: 30px;
+}
     .slides{
-        margin-top: 10px;
         background-color: $white;
         .swiper-slide.swiper-slide-lg{
             height: 65px;
@@ -38,6 +77,8 @@ sliding-tabs {
             border-bottom-width: 2px;
             border-bottom-color:transparent;
             opacity: 0.50;
+            display: flex;
+            align-items: flex-start;
         }
         .selected{
             border-bottom-color: $black;

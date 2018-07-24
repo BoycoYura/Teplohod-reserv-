@@ -3,7 +3,7 @@ page-intro {
         background-image:url("../assets/intro/intro_top_bg.png");
         background-repeat: no-repeat;
         background-position: top center;
-        background-size:auto 90%;
+        background-size: auto 105%;
         background-color:#fff;
 
         .page-intro-image{
@@ -17,20 +17,30 @@ page-intro {
             .swiper-slide{
                 .icon{
                     font-size: 40px;
-                    color:color($colors, primary);
+                    color:#2F7BDB;
                 }
                 .slide-title{
                     margin-bottom: 0;
+                    font-weight: bold;
                 }
                 p{
                     font-size: 14px;
                 }
                 .button{
                     margin-bottom: 20px;
+                    border-color: #2f7bdb;
+                    color: white;
+                    text-transform: capitalize;
+                    padding: 15px 20px;
+                    background-color: #2f7bdb;
                 }
             }
             .swiper-pagination{
                 bottom:0;
+            }
+
+            .swiper-pagination-bullet-active {
+                background: #2f7bdb;
             }
         }
     }

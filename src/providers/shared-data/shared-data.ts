@@ -323,11 +323,23 @@ export class SharedDataProvider {
     this.storage.set('customerData', this.customerData);
     this.subscribePush();
   }
+
+  userInfo(data) {
+    this.customerData = data;
+    this.storage.set('customerData', this.customerData);
+    this.subscribePush();
+  }
+
+  
+
   logOut() {
     this.loading.autoHide(500);
     this.customerData = {};
     this.storage.set('customerData', this.customerData);
-    // this.fb.logout();
+
+    console.log("Customer data");
+    console.log(this.customerData);
+
   }
 
 

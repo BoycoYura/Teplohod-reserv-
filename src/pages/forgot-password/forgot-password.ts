@@ -21,9 +21,9 @@ import { ConfigProvider } from '../../providers/config/config';
 })
 export class ForgotPasswordPage {
   formData = {
-    customers_email_address: '',
+    email: '',
   };
-  errorMessage = '';
+  checkMessage = '';
   constructor(public navCtrl: NavController,
     public viewCtrl: ViewController,
     public loading: LoadingProvider,
@@ -33,16 +33,10 @@ export class ForgotPasswordPage {
   }
   forgetPassword() {
     this.loading.show();
-    this.errorMessage = '';
-    this.http.post(this.config.url + 'processForgotPassword', this.formData).map(res => res.json()).subscribe(data => {
+    this.http.post('http://dev8.kitweb.pro/v1/change-password', this.formData).map(res => res.json()).subscribe(data => {
       this.loading.hide();
-      if (data.success == 1) {
-
-        this.dismiss();
-      }
-      if (data.success == 0) {
-        this.errorMessage = data.message;
-      }
+      console.log(data);
+      this.checkMessage = data.message;
     });
   }
 

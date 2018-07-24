@@ -13,7 +13,7 @@
 
 <ion-content class="page-sign-up" padding>
   <ion-row>
-    <ion-col col-12>
+    <!-- <ion-col col-12>
       <div class="photo">
         <div class="image">
           <img class="avatar" src="assets/avatar.png" *ngIf="image==null">
@@ -23,7 +23,7 @@
           <ion-icon name="camera" (click)='openCamera()'></ion-icon>
         </div>
       </div>
-    </ion-col>
+    </ion-col> -->
   </ion-row>
 
   <form #loginForm="ngForm" class="form" (ngSubmit)="signUp()">
@@ -31,24 +31,30 @@
       <ion-col>
         <ion-list>
           <ion-item>
-            <ion-input type="text" placeholder="{{'First Name'|translate}}" name="customers_firstname" [(ngModel)]="formData.customers_firstname"
+            <ion-input type="email" email placeholder="{{'Email'|translate}}" name="email" [(ngModel)]="formData.email"
               required></ion-input>
           </ion-item>
+          <p class="errorText">{{errorEmail}}</p>
           <ion-item>
-            <ion-input type="text" placeholder="{{'Last Name'|translate}}" name="customers_lastname" [(ngModel)]="formData.customers_lastname"
+            <ion-input type="password" placeholder="{{'Password'|translate}}" name="password" [(ngModel)]="formData.password"
               required></ion-input>
           </ion-item>
+          <p class="errorText">{{errorPassword}}</p>
           <ion-item>
-            <ion-input type="email" email placeholder="{{'Email'|translate}}" name="customers_email_address" [(ngModel)]="formData.customers_email_address"
+            <ion-input type="password" placeholder="{{'Password confirmation'|translate}}" name="password_confirmation" [(ngModel)]="formData.password_confirmation"
               required></ion-input>
           </ion-item>
 
           <ion-item>
-            <ion-input type="password" placeholder="{{'Password'|translate}}" name="customers_password" [(ngModel)]="formData.customers_password"
+            <ion-input type="text" placeholder="{{'Name'|translate}}" name="name" [(ngModel)]="formData.name"
               required></ion-input>
           </ion-item>
           <ion-item>
-            <ion-input type="number" placeholder="{{'Mobile'|translate}}" name="customers_telephone" [(ngModel)]="formData.customers_telephone"
+            <ion-input type="text" placeholder="{{'Surname'|translate}}" name="surname" [(ngModel)]="formData.surname"
+              required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input type="number" placeholder="{{'Phone'|translate}}" name="phone" [(ngModel)]="formData.phone"
               required></ion-input>
           </ion-item>
         </ion-list>
@@ -63,8 +69,7 @@
       <ion-col>
         <p>{{"Creating an account means you’re okay with our"|translate}}
           <a (click)="openTermServicesPage()">{{'Term and Services'|translate}}</a>,
-          <a (click)="openPrivacyPolicyPage()">{{'Privacy Policy'|translate}}</a> {{'and'|translate}}
-          <a (click)="openRefundPolicyPage()">{{'Refund Policy'|translate}}</a>
+          <a (click)="openPrivacyPolicyPage()">{{'Privacy Policy'|translate}}</a>
         </p>
       </ion-col>
     </ion-row>

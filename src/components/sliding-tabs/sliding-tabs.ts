@@ -9,6 +9,13 @@ import { ConfigProvider } from '../../providers/config/config';
 import 'rxjs/add/operator/map';
 import { LoadingProvider } from '../../providers/loading/loading';
 import { InfiniteScroll } from 'ionic-angular';
+import { Slides } from 'ionic-angular';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { SingleTourPage } from '../../pages/single-tour/single-tour';
+import {SingleDateTourPage} from '../../pages/single-date-tour/single-date-tour';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'sliding-tabs',
@@ -21,11 +28,19 @@ export class SlidingTabsComponent {
   products = new Array;
   selected = '';
   page = 0;
+  Alltours;
+  AllDatatours;
+  tourEmpty = false;
+  dataTourEmpty = false;
 
   constructor(
     public shared: SharedDataProvider,
     public http: Http,
     public config: ConfigProvider,
+    private httpClient: HttpClient,
+    public modalCtrl: ModalController,
+    public navCtrl: NavController,
+    public translateService: TranslateService,
     public loading: LoadingProvider,
   ) {
   }
@@ -40,23 +55,60 @@ export class SlidingTabsComponent {
     // if (d.type != undefined)
     //   data.type = d.type;
     data.language_id = this.config.langId;
-    this.http.post(this.config.url + 'getAllProducts', data).map(res => res.json()).subscribe(data => {
 
-      this.infinite.complete();
-      if (this.page == 0) {
-      this.products = new Array;
-        // this.loading.hide();
-      }
-      if (data.success == 1) {
-        this.page++;
-        var prod = data.product_data;
-        for (let value of prod) {
-          this.products.push(value);
+    var headers = new HttpHeaders().set('Content-Language',localStorage.langId);
+    var options =  {
+      headers: headers
+    };
+
+    console.log("Language ID:");
+    console.log(localStorage.langId);
+
+    this.httpClient.get('http://dev8.kitweb.pro/v1/getTours', options).subscribe(
+      res => {
+        console.log("Tours info:");
+        console.log(res);
+        this.Alltours = res;
+        if(this.Alltours.length == 0){
+          this.tourEmpty = true;
+          console.log("TOur list empty");
         }
-      }
-      if (data.success == 0) { this.infinite.enable(false); }
-    });
-    // console.log(this.products.length + "   " + this.page);
+      },
+      err => {
+        var er_status = err.status;
+        console.log(err);
+        this.loading.hide();
+        if(er_status == '500'){
+          alert("Ошибка сервера");
+        }
+      });
+
+      this.httpClient.get('http://dev8.kitweb.pro/v1/getDateTours', options).subscribe(
+        res => {
+          console.log("Date tours info:");
+          console.log(res);
+          this.AllDatatours = res;
+          if(this.AllDatatours.length == 0){
+            this.dataTourEmpty = true;
+            console.log("TOur Data list empty");
+          }
+        },
+        err => {
+          var er_status = err.status;
+          console.log(err);
+          this.loading.hide();
+          if(er_status == '500'){
+            alert("Ошибка сервера");
+          }
+        });
+  }
+
+  tourDetails(tour_id){
+    this.navCtrl.push(SingleTourPage, { id_tour: tour_id });
+  }
+
+  tourDataDetails(tour_id){
+    this.navCtrl.push(SingleDateTourPage, { id_tour: tour_id });
   }
 
   //changing tab
@@ -69,8 +121,16 @@ export class SlidingTabsComponent {
   }
 
 
+  @ViewChild(Slides) slides: Slides;
+
+  goToSlide() {
+    this.slides.slideTo(2, 500);
+  }
+
   ngOnInit() {
     this.getProducts(null);
   }
+
+  segments: string = "newest";
 
 }

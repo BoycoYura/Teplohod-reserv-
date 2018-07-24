@@ -8,24 +8,28 @@ import { LoadingProvider } from '../../providers/loading/loading';
 import { ConfigProvider } from '../../providers/config/config';
 import { Http } from '@angular/http';
 import { SharedDataProvider } from '../../providers/shared-data/shared-data';
-import { Camera, CameraOptions } from '@ionic-native/camera';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+// import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Platform } from 'ionic-angular';
 import { LoginPage } from '../login/login';
+import { HttpClient} from '@angular/common/http';
 @Component({
   selector: 'page-sign-up',
   templateUrl: 'sign-up.html',
 })
 export class SignUpPage {
   formData = {
-    customers_firstname: '',
-    customers_lastname: '',
-    customers_email_address: '',
-    customers_password: '',
-    customers_telephone: '',
-    customers_picture: ''
+    email: '',
+    password: '',
+    password_confirmation: '',
+    name: '',
+    surname: '',
+    phone: ''
   };
   image;
   errorMessage = '';
+  errorEmail;
+  errorPassword;
   constructor(
     public http: Http,
     public config: ConfigProvider,
@@ -33,48 +37,73 @@ export class SignUpPage {
     public modalCtrl: ModalController,
     public loading: LoadingProvider,
     public shared: SharedDataProvider,
-    public platform: Platform,
-    private camera: Camera
+    public navCtrl: NavController,
+    private httpClient: HttpClient,
+    public platform: Platform
+    // private camera: Camera
   ) {
   }
-  openCamera() {
-    const options: CameraOptions = {
-      quality: 80,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
-      allowEdit: true,
-      targetWidth: 100,
-      targetHeight: 100,
-      saveToPhotoAlbum: false,
-      correctOrientation: true
-    }
-    this.platform.ready().then(() => {
+  // openCamera() {
+  //   const options: CameraOptions = {
+  //     quality: 80,
+  //     destinationType: this.camera.DestinationType.DATA_URL,
+  //     encodingType: this.camera.EncodingType.JPEG,
+  //     mediaType: this.camera.MediaType.PICTURE,
+  //     allowEdit: true,
+  //     targetWidth: 100,
+  //     targetHeight: 100,
+  //     saveToPhotoAlbum: false,
+  //     correctOrientation: true
+  //   }
+  //   this.platform.ready().then(() => {
 
-      this.camera.getPicture(options).then((imageData) => {
-        // imageData is either a base64 encoded string or a file URI
-        // If it's base64:
-        this.image = 'data:image/jpeg;base64,' + imageData;
-        // console.log(base64Image);
+  //     this.camera.getPicture(options).then((imageData) => {
+  //       // imageData is either a base64 encoded string or a file URI
+  //       // If it's base64:
+  //       this.image = 'data:image/jpeg;base64,' + imageData;
+  //       // console.log(base64Image);
 
-      }, (err) => { });
-    });
-  }
+  //     }, (err) => { });
+  //   });
+  // }
+
+
   signUp() {
     this.loading.show();
     this.errorMessage = '';
-    this.formData.customers_picture = this.image;
-    this.http.post(this.config.url + 'processRegistration', this.formData).map(res => res.json()).subscribe(data => {
-      this.loading.hide();
-      if (data.success == 1) {
-        this.shared.login(data.data[0]);
-        //this.config.customerData = data.data[0];
+    // this.formData.customers_picture = this.image;
+
+    this.httpClient.post('http://dev8.kitweb.pro/v1/register', this.formData).subscribe(
+      res => {
+        this.loading.hide();
+        console.log("User info registration");
+        console.log(res);
+        this.shared.userInfo(res);
         this.viewCtrl.dismiss();
-      }
-      if (data.success == 0) {
-        this.errorMessage = data.message;
-      }
-    });
+      },
+      err => {
+        
+        if(err.error.password == undefined){
+          this.errorPassword = '';
+        }
+        else{
+          this.errorPassword = err.error.password[0];
+        }
+
+        if(err.error.email == undefined){
+          this.errorEmail = '';
+        }
+        else{
+          this.errorEmail = err.error.email[0];
+        }
+        
+        var er_status = err.status;
+        console.log();
+        this.loading.hide();
+        if(er_status == '500'){
+          alert("Ошибка сервера");
+        }
+      });
   }
 
   openPrivacyPolicyPage() {

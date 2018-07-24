@@ -54,6 +54,8 @@ export class BannersComponent {
     data.products_id = id;
     data.language_id = this.config.langId;
     this.http.post(this.config.url + 'getAllProducts', data).map(res => res.json()).subscribe(data => {
+      console.log("POST_DATA");
+      console.log(data);
       this.loading.hide();
       if (data.success == 1) {
         this.navCtrl.push(ProductDetailPage, { data: data.product_data[0] });
