@@ -188,6 +188,10 @@ export class SingleTourPage {
         this.loading.hide();
         console.log(this.SingleTourInfo = res);
         var i = 0;
+		for (var key in this.SingleTourInfo) {
+			var value = this.SingleTourInfo[key];
+			this.TourArray[key] = value;
+		}
       },
       err => {
         var er_status = err.status;

@@ -233,13 +233,26 @@ export class SingleDateTourPage {
       res => {
         this.loading.hide();
         this.SingleTourInfo = res;
-
+		
+		for (var key in this.SingleTourInfo) {
+			var value = this.SingleTourInfo[key];
+			this.TourArray[key] = value;
+		}
+		
         this.ImagesArray = this.SingleTourInfo.images;
         console.log("Images Array:");
         console.log(this.ImagesArray);
         this.DatesArray = this.SingleTourInfo.dates;
         var i = 0;
-
+		
+		console.log("Data Array:");
+		console.log(this.DatesArray);
+		
+		for (var key in this.DatesArray) {
+			var value = this.DatesArray[key];
+			this.DatesAllArray[i] = value;
+		}
+		
         console.log("Dates Array:");
         console.log(this.DatesAllArray);
       },

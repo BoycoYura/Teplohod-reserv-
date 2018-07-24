@@ -13,7 +13,11 @@ import { AlertProvider } from '../../providers/alert/alert';
 import { OrderDetailPage } from '../order-detail/order-detail';
 import { CartPage } from '../cart/cart';
 import { SearchPage } from '../search/search';
-
+import { HomePage } from '../home/home';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { ViewController, ModalController } from 'ionic-angular';
+import { LoginPage } from '../login/login';
+import { ReturnStatement } from '@angular/compiler';
 
 @Component({
   selector: 'page-my-orders',
@@ -22,6 +26,12 @@ import { SearchPage } from '../search/search';
 export class MyOrdersPage {
   orders = new Array;
   httpRunning = true;
+  AllOrders;
+  items = [];
+  count_order = 0;
+  Count_array;
+  Count_status= true;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -30,45 +40,132 @@ export class MyOrdersPage {
     public shared: SharedDataProvider,
     translate: TranslateService,
     public alert: AlertProvider,
+    private httpClient: HttpClient,
     public loading: LoadingProvider
   ) {
   }
+
+  openHome() {
+    this.navCtrl.setRoot(HomePage);
+  }
+
+
   getOrders() {
-    this.httpRunning = true;
-    this.orders = [];
+    var headers = new HttpHeaders().set('X-Auth',this.shared.customerData.X_Auth);
+
+    var options =  {
+      headers: headers
+    };
+
     this.loading.show();
-    var data: { [k: string]: any } = {};
-    data.customers_id = this.shared.customerData.customers_id;
-    data.language_id = this.config.langId;
-    this.http.post(this.config.url + 'getOrders', data).map(res => res.json()).subscribe(data => {
-      this.loading.hide();
-      this.httpRunning = false;
-      //$rootScope.address=response.data.data;
-      if (data.success == 1) {
-        this.orders = [];
-        this.orders = data.data;
-      }
-      // $scope.$broadcast('scroll.refreshComplete');
-    },
-      function (response) {
+    this.httpClient.get('http://dev8.kitweb.pro/v1/getOrders', options).subscribe(
+      res => {
         this.loading.hide();
-        this.alert.show("Server Error while Loading Orders");
-        console.log(response);
+        console.log("All orders:");
+        console.log(res);
+        this.AllOrders = res;
+      },
+      err => {
+        console.log("Error");
+        var er_status = err.status;
+
+        if(er_status == '500'){
+          alert("Ошибка сервера");
+        }
+
+        if(er_status == '400'){
+          alert("Пожалуйста перезайдите в приложении. Возникли проблемы с вашим профилем!");
+          this.navCtrl.push(LoginPage);
+        }
+
       });
   };
+  
+  doInfinite(infiniteScroll) {
+    console.log('Begin async operation');
+    var headers = new HttpHeaders().set('X-Auth',this.shared.customerData.X_Auth);
 
-  showOrderDetail(order) {
+    var options =  {
+      headers: headers
+    };
 
-    this.navCtrl.push(OrderDetailPage, { 'data': order });
+    console.log(this.count_order);
+    this.httpClient.get('http://dev8.kitweb.pro/v1/getOrders/'+ this.count_order, options).subscribe(
+      res => {
+        this.loading.hide();
+        this.Count_array = res;
+        if(this.Count_array.length <=5){
+          console.log("Less than 5");
+          this.Count_status = false;
+        }
+        else{
+          this.AllOrders = this.AllOrders.concat(res) ;
+          console.log(res);
+          this.count_order+=15; 
+          console.log(this.count_order);
+          console.log("All orders length:");
+          console.log(this.AllOrders.length);
+          infiniteScroll.complete();
+        }
+      },
+      err => {
+        console.log("Error");
+        var er_status = err.status;
 
+        if(er_status == '500'){
+          alert("Ошибка сервера");
+        }
+
+        if(er_status == '400'){
+          alert("Пожалуйста перезайдите в приложении. Возникли проблемы с вашим профилем!");
+          this.navCtrl.push(LoginPage);
+        }
+      });
   }
+
+  // showOrderDetail(order) {
+  //   this.navCtrl.push(OrderDetailPage, { 'data': order });
+  // }
+
   ionViewDidLoad() {
     this.httpRunning = true;
     this.getOrders();
   }
+
   openCart() {
     this.navCtrl.push(CartPage);
   }
+
+  doRefresh(refresher) {
+    console.log('Begin async operation', refresher);
+    var headers = new HttpHeaders().set('X-Auth',this.shared.customerData.X_Auth);
+
+    var options =  {
+      headers: headers
+    };
+
+    this.count_order = 0;
+    
+    this.httpClient.get('http://dev8.kitweb.pro/v1/getOrders/'+ this.count_order, options).subscribe(
+      res => {
+        this.AllOrders = res;
+        refresher.complete();
+      },
+      err => {
+        console.log("Error");
+        var er_status = err.status;
+
+        if(er_status == '500'){
+          alert("Ошибка сервера");
+        }
+
+        if(er_status == '400'){
+          alert("Пожалуйста перезайдите в приложении. Возникли проблемы с вашим профилем!");
+          this.navCtrl.push(LoginPage);
+        }
+      });
+  }
+
   openSearch() {
     this.navCtrl.push(SearchPage);
   }
